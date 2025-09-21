@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { X, MessageSquare, Lightbulb, RefreshCw, FileText, GitCompare, Microscope, Clock } from 'lucide-react'
-import { getTranslation } from '@/lib/translations'
-import { Locale } from '@/lib/i18n'
+import { getTranslation } from '@/src/services/translations'
+import { Locale } from '@/src/services/i18n'
 
 interface InsightRefineryModalProps {
   isOpen: boolean
