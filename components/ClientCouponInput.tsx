@@ -45,6 +45,7 @@ export default function ClientCouponInput({
         'WELCOME20': { discount_amount: 20, description: 'Welcome discount - $20 off' },
         'LIUYILAN20': { discount_amount: 20, description: 'Special discount for liuyilan72@outlook.com - $20 off' },
         'LIUYILAN45A': { discount_amount: 45, description: 'Premium discount for liuyilan72@outlook.com - $45 off (Coupon A)' },
+        'LIUYILAN50A': { discount_amount: 50, description: 'Premium discount for liuyilan72@outlook.com - $45 off (Coupon A)' },
         'LIUYILAN45B': { discount_amount: 45, description: 'Premium discount for liuyilan72@outlook.com - $45 off (Coupon B)' },
         'LIUYILAN45C': { discount_amount: 45, description: 'Premium discount for liuyilan72@outlook.com - $45 off (Coupon C)' }
       }
