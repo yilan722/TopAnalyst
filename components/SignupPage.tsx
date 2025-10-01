@@ -280,7 +280,7 @@ export default function SignupPage({ locale }: SignupPageProps) {
               </button>
 
               {/* Alternative Contact */}
-              <div className="text-center">
+              {/*<div className="text-center">
                 <p className="text-gray-600 mb-2">
                   {locale === 'zh' ? '或致电我们' : 'or call us'}
                 </p>
@@ -292,7 +292,7 @@ export default function SignupPage({ locale }: SignupPageProps) {
               {/* Social Media Links */}
               <div className="text-center">
                 <p className="text-gray-600 mb-4">
-                  {locale === 'zh' ? '关注我们' : 'Follow us'}
+                  {locale === 'zh' ? '关注我们每日免费获取研报推送' : 'Follow us for daily free reports'}
                 </p>
                 <div className="flex justify-center space-x-6">
                   <a 
@@ -332,7 +332,7 @@ export default function SignupPage({ locale }: SignupPageProps) {
               </div>
 
               {/* Login Link */}
-              <div className="text-center">
+              {/*<div className="text-center">
                 <p className="text-gray-600">
                   {locale === 'zh' ? '已有账户？' : 'I already have an account?'}
                   <button
@@ -343,7 +343,7 @@ export default function SignupPage({ locale }: SignupPageProps) {
                     {locale === 'zh' ? '登录' : 'Log in'}
                   </button>
                 </p>
-              </div>
+              </div>*/}
             </form>
           </div>
         </div>
