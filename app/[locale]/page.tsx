@@ -19,6 +19,7 @@ import toast from 'react-hot-toast'
 
 // 导入Insight Refinery组件
 import InsightRefineryButton from '../../components/InsightRefinery/InsightRefineryButton'
+import DemoVideo from '../../components/DemoVideo'
 import { canGenerateReport } from '../services/database/supabase-auth'
 import { supabase } from '../services/supabase'
 
@@ -333,8 +334,19 @@ export default function HomePage({ params }: PageProps) {
         onLocaleChange={handleLocaleChange}
       >
         <div className="space-y-6">
-          {/* Search Form and Stock Data Display */}
-          <div className="space-y-4 sm:space-y-6">
+          {/* Combined Question and Search Module */}
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-amber-500/30 shadow-lg p-6 sm:p-8">
+            {/* Question Text */}
+            <div className="text-center mb-6">
+              <h1 className="text-3xl md:text-4xl font-light text-white mb-2">
+                {currentLocale === 'zh' ? '您今天想研究哪家公司？' : 'Which company do you want to research today?'}
+              </h1>
+              <p className="text-gray-300 text-lg font-light">
+                {currentLocale === 'zh' ? '开始通过简单股票代码输入生成分析' : 'Start generating with a simple ticker input'}
+              </p>
+            </div>
+
+            {/* Search Form */}
             <SearchForm
               onSearch={handleSearch}
               onGenerateReport={handleGenerateReport}
@@ -342,6 +354,10 @@ export default function HomePage({ params }: PageProps) {
               locale={currentLocale}
               isGeneratingReport={isGeneratingReport}
             />
+          </div>
+
+          {/* Stock Data Display */}
+          <div className="space-y-4 sm:space-y-6">
             
             {/* Stock Data Display - Above Demo */}
             {stockData && (
@@ -424,6 +440,13 @@ export default function HomePage({ params }: PageProps) {
               </div>
             )}
           </div>
+          
+          {/* Demo Video Section - Only show when no report data */}
+          {!reportData && (
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 sm:p-8">
+              <DemoVideo locale={currentLocale} />
+            </div>
+          )}
           
           {/* Report Demo Section - Only show when no report data */}
           {!reportData && (

@@ -1,10 +1,140 @@
 [
   {
-    "id": "bakkt-holdings--inc--2025-10-04",
+    "id": "advanced-micro-devices--inc--2025-10-07",
+    "title": "Advanced Micro Devices, Inc. - In-Depth Company Profile",
+    "company": "Advanced Micro Devices, Inc.",
+    "symbol": "AMD",
+    "date": "2025-10-07",
+    "summary": "Comprehensive analysis of Advanced Micro Devices, Inc., extracted from PDF with complete table data.",
+    "pdfPath": "Advanced Micro Devices, Inc. (AMD) - In-Depth Company Profile.pdf",
+    "isPublic": true,
+    "tables": [
+      {
+        "title": "Advanced Micro Devices, Inc. Table 1",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.1.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 1
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 2",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.2.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 2
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 3",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.3.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 3
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 4",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.4.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 4
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 5",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.5.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 5
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 6",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.6.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 6
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 7",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.7.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 7
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 8",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.8.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 8
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 9",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.9.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 9
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 10",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.10.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 10
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 11",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.11.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 11
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 12",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.12.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 12
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 13",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.13.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 13
+      },
+      {
+        "title": "Advanced Micro Devices, Inc. Table 14",
+        "type": "image",
+        "imagePath": "/table-images/advanced-micro-devices--inc-.14.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 14
+      }
+    ],
+    "sections": {
+      "1. 基本面分析": "Fundamental analysis content for Advanced Micro Devices, Inc.",
+      "2. 业务分析": "Business analysis content for Advanced Micro Devices, Inc.",
+      "3. 增长催化剂": "Growth catalysts content for Advanced Micro Devices, Inc.",
+      "4. 估值分析": "Valuation analysis content for Advanced Micro Devices, Inc."
+    }
+  },
+  {
+    "id": "bakkt-holdings--inc--2025-10-02",
     "title": "Bakkt Holdings, Inc. - In-Depth Company Profile",
     "company": "Bakkt Holdings, Inc.",
     "symbol": "BKKT",
-    "date": "2025-10-04",
+    "date": "2025-10-02",
     "summary": "Comprehensive analysis of Bakkt Holdings, Inc., extracted from PDF with complete table data.",
     "pdfPath": "Bakkt Holdings, Inc. (BKKT) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -162,11 +292,11 @@
     }
   },
   {
-    "id": "circle-internet-group-2025-10-04",
+    "id": "circle-internet-group-2025-09-27",
     "title": "Circle Internet Group - In-Depth Company Profile",
     "company": "Circle Internet Group",
     "symbol": "CRCL",
-    "date": "2025-10-04",
+    "date": "2025-09-27",
     "summary": "Comprehensive analysis of Circle Internet Group, extracted from PDF with complete table data.",
     "pdfPath": "Circle Internet Group (CRCL) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -332,11 +462,173 @@
     }
   },
   {
-    "id": "coreweave--inc--2025-10-04",
+    "id": "coinbase-global--inc--2025-10-04",
+    "title": "Coinbase Global, Inc. - In-Depth Company Profile",
+    "company": "Coinbase Global, Inc.",
+    "symbol": "COIN",
+    "date": "2025-10-04",
+    "summary": "Comprehensive analysis of Coinbase Global, Inc., extracted from PDF with complete table data.",
+    "pdfPath": "Coinbase Global, Inc. (COIN) - In-Depth Company Profile.pdf",
+    "isPublic": true,
+    "tables": [
+      {
+        "title": "Coinbase Global, Inc. Table 1",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.1.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 1
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 2",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.2.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 2
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 3",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.3.png",
+        "section": "1. 基本面分析",
+        "isRealData": true,
+        "pageNumber": 3
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 4",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.4.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 4
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 5",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.5.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 5
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 6",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.6.png",
+        "section": "2. 业务分析",
+        "isRealData": true,
+        "pageNumber": 6
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 7",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.7.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 7
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 8",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.8.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 8
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 9",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.9.png",
+        "section": "3. 增长催化剂",
+        "isRealData": true,
+        "pageNumber": 9
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 10",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.10.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 10
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 11",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.11.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 11
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 12",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.12.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 12
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 13",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.13.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 13
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 14",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.14.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 14
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 15",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.15.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 15
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 16",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.16.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 16
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 17",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.17.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 17
+      },
+      {
+        "title": "Coinbase Global, Inc. Table 18",
+        "type": "image",
+        "imagePath": "/table-images/coinbase-global--inc-.18.png",
+        "section": "4. 估值分析",
+        "isRealData": true,
+        "pageNumber": 18
+      }
+    ],
+    "sections": {
+      "1. 基本面分析": "Fundamental analysis content for Coinbase Global, Inc.",
+      "2. 业务分析": "Business analysis content for Coinbase Global, Inc.",
+      "3. 增长催化剂": "Growth catalysts content for Coinbase Global, Inc.",
+      "4. 估值分析": "Valuation analysis content for Coinbase Global, Inc."
+    }
+  },
+  {
+    "id": "coreweave--inc--2025-09-10",
     "title": "CoreWeave, Inc. - In-Depth Company Profile",
     "company": "CoreWeave, Inc.",
     "symbol": "CRWV",
-    "date": "2025-10-04",
+    "date": "2025-09-10",
     "summary": "Comprehensive analysis of CoreWeave, Inc., extracted from PDF with complete table data.",
     "pdfPath": "CoreWeave, Inc. (CRWV) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -438,11 +730,11 @@
     }
   },
   {
-    "id": "iren-limited-2025-10-04",
+    "id": "iren-limited-2025-09-26",
     "title": "IREN Limited - In-Depth Company Profile",
     "company": "IREN Limited",
     "symbol": "IREN",
-    "date": "2025-10-04",
+    "date": "2025-09-26",
     "summary": "Comprehensive analysis of IREN Limited, extracted from PDF with complete table data.",
     "pdfPath": "IREN Limited (IREN) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -528,11 +820,11 @@
     }
   },
   {
-    "id": "pfizer-inc--2025-10-04",
+    "id": "pfizer-inc--2025-10-02",
     "title": "Pfizer Inc. - In-Depth Company Profile",
     "company": "Pfizer Inc.",
     "symbol": "PFE",
-    "date": "2025-10-04",
+    "date": "2025-10-02",
     "summary": "Comprehensive analysis of Pfizer Inc., extracted from PDF with complete table data.",
     "pdfPath": "Pfizer Inc. (PFE) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -650,11 +942,11 @@
     }
   },
   {
-    "id": "tesla--inc--2025-10-04",
+    "id": "tesla--inc--2025-09-15",
     "title": "Tesla, Inc. - In-Depth Company Profile",
     "company": "Tesla, Inc.",
     "symbol": "TSLA",
-    "date": "2025-10-04",
+    "date": "2025-09-15",
     "summary": "Comprehensive analysis of Tesla, Inc., extracted from PDF with complete table data.",
     "pdfPath": "Tesla, Inc. (TSLA) - In-Depth Company Profile.pdf",
     "isPublic": true,
@@ -772,11 +1064,11 @@
     }
   },
   {
-    "id": "----2025-10-04",
+    "id": "----2025-09-17",
     "title": "优必选 - In-Depth Company Profile",
     "company": "优必选",
     "symbol": "09880.HK",
-    "date": "2025-10-04",
+    "date": "2025-09-17",
     "summary": "Comprehensive analysis of 优必选, extracted from PDF with complete table data.",
     "pdfPath": "优必选 (09880.HK) (09880) - In-Depth Company Profile.pdf",
     "isPublic": true,

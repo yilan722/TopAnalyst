@@ -176,12 +176,30 @@ export async function GET(request: NextRequest) {
         // 调用 StockTwits API 获取完整数据
         const stockTwitsUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/stocktwits-most-active`
         console.log('调用 StockTwits API:', stockTwitsUrl)
-        const stockTwitsResponse = await fetch(stockTwitsUrl)
-        console.log('StockTwits API 响应状态:', stockTwitsResponse.status)
-        const stockTwitsData = await stockTwitsResponse.json()
-        console.log('StockTwits API 响应数据:', stockTwitsData.success, stockTwitsData.data?.length)
+        
+        // 添加超时控制
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 60000) // 60秒超时
+        
+        try {
+          const stockTwitsResponse = await fetch(stockTwitsUrl, {
+            signal: controller.signal,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+          })
+          
+          clearTimeout(timeoutId)
+          console.log('StockTwits API 响应状态:', stockTwitsResponse.status)
+          
+          if (!stockTwitsResponse.ok) {
+            throw new Error(`StockTwits API failed with status: ${stockTwitsResponse.status}`)
+          }
+          
+          const stockTwitsData = await stockTwitsResponse.json()
+          console.log('StockTwits API 响应数据:', stockTwitsData.success, stockTwitsData.data?.length)
 
-        if (stockTwitsData.success && stockTwitsData.data) {
+          if (stockTwitsData.success && stockTwitsData.data) {
           const hotStocks: HotStock[] = []
 
           // 处理 StockTwits 返回的数据，如果价格数据不完整则使用 yfinance
@@ -325,6 +343,12 @@ export async function GET(request: NextRequest) {
               'Expires': '0'
             }
           })
+        }
+        
+        } catch (fetchError) {
+          console.error('StockTwits API 调用失败:', fetchError)
+          clearTimeout(timeoutId)
+          // 继续执行回退逻辑
         }
 
       } catch (error) {

@@ -251,18 +251,33 @@ export default function Sidebar({
               }`} />
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-2">
-                    <p className={`font-medium text-sm whitespace-nowrap ${
-                      isActive ? 'text-amber-300' : 'text-slate-300 group-hover:text-white'
-                    }`}>
-                      {item.name}
-                    </p>
-                    {item.isBeta && (
-                      <span className="px-1.5 py-0.5 text-xs font-medium bg-purple-600 text-white rounded flex-shrink-0">
-                        BETA
-                      </span>
-                    )}
-                  </div>
+                  {item.id === 'home' ? (
+                    <div className="flex flex-col">
+                      <p className={`font-medium text-sm ${
+                        isActive ? 'text-amber-300' : 'text-slate-300 group-hover:text-white'
+                      }`}>
+                        {item.name}
+                      </p>
+                      <p className={`text-xs mt-0.5 ${
+                        isActive ? 'text-amber-400/80' : 'text-slate-400 group-hover:text-slate-300'
+                      }`}>
+                        {item.description}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <p className={`font-medium text-sm whitespace-nowrap ${
+                        isActive ? 'text-amber-300' : 'text-slate-300 group-hover:text-white'
+                      }`}>
+                        {item.name}
+                      </p>
+                      {item.isBeta && (
+                        <span className="px-1.5 py-0.5 text-xs font-medium bg-purple-600 text-white rounded flex-shrink-0">
+                          BETA
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </button>

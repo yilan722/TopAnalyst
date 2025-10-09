@@ -24,8 +24,7 @@ export default function SearchForm({ onSearch, onGenerateReport, isLoading, loca
   }
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-amber-500/30 shadow-lg p-3 sm:p-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="symbol" className="block text-sm font-medium text-amber-200 mb-2 font-inter">
             {getTranslation(locale, 'searchPlaceholder')}
@@ -37,7 +36,7 @@ export default function SearchForm({ onSearch, onGenerateReport, isLoading, loca
               id="symbol"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value)}
-              placeholder={getTranslation(locale, 'searchPlaceholder')}
+              placeholder={getTranslation(locale, 'searchInputPlaceholder')}
               className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-amber-500/30 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-400 font-inter"
               disabled={isLoading}
             />
@@ -90,7 +89,6 @@ export default function SearchForm({ onSearch, onGenerateReport, isLoading, loca
             </div>
           </div>
         )}
-      </form>
-    </div>
+    </form>
   )
 } 

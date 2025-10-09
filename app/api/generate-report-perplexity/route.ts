@@ -1,4 +1,5 @@
 
+
 // 使用 Node.js runtime 以避免 Edge Runtime 兼容性问题
 export const runtime = "nodejs"
 
@@ -404,8 +405,8 @@ function cleanThinkingProcess(content: string): string {
 function validateReportFormat(reportContent: any): any {
   console.log('🔍 开始验证报告格式...')
   
-  // 检查必需的四个部分
-  const requiredSections = ['fundamentalAnalysis', 'businessSegments', 'growthCatalysts', 'valuationAnalysis']
+  // 检查必需的五个部分
+  const requiredSections = ['fundamentalAnalysis', 'businessSegments', 'growthCatalysts', 'valuationAnalysis', 'references']
   for (const section of requiredSections) {
     if (!reportContent[section]) {
       console.error(`❌ 缺少必需的部分: ${section}`)
@@ -441,19 +442,14 @@ function validateReportFormat(reportContent: any): any {
         for (let i = 0; i < missingCharts; i++) {
           chartHtml += `
             <div class="chart-container">
-              <h4>Investment Risk-Return Profile</h4>
-              <div class="chart-analysis">
-                <div class="chart-key-points">
-                  <div class="key-point">
-                    <strong>Asymmetric Returns:</strong> Significant upside potential with limited downside risk given current valuation levels
-                  </div>
-                  <div class="key-point">
-                    <strong>Multiple Catalysts:</strong> Pipeline advancement, cost optimization, and strategic execution providing multiple value creation paths
-                  </div>
-                  <div class="key-point">
-                    <strong>Income Support:</strong> Substantial dividend yield providing returns while awaiting fundamental value recognition
-                  </div>
-                </div>
+              <h4>图表 ${i + 1}</h4>
+              <div class="chart-placeholder">
+                <p>图表描述：这里应该包含具体的图表数据和分析</p>
+                <ul>
+                  <li>数据点1：具体数值和趋势</li>
+                  <li>数据点2：具体数值和趋势</li>
+                  <li>数据点3：具体数值和趋势</li>
+                </ul>
               </div>
             </div>
           `
@@ -624,6 +620,14 @@ valuationAnalysis (估值分析) - 必须包含以下内容：
     </tbody>
   </table>
 
+references (引用) - 必须包含以下内容：
+- 详实的引用列表，包含报告中所有带数字引用标记的内容
+- 每个引用必须包含完整的来源信息：作者、标题、发布机构、发布日期、URL链接
+- 引用格式必须专业规范，按照学术标准排列
+- 必须包含所有财务数据、市场数据、行业数据的原始来源
+- 引用必须与报告中的数字标记（如[1]、[2]等）一一对应
+- 引用来源必须权威可靠，包括：公司财报、SEC文件、行业报告、权威新闻网站等
+
 🔑 核心要求：
 - 使用最新的财务数据（比如今天是2025年9月5号，应该搜索2024年年报和2025年Q1,Q2的财报）；搜索最新相关信息，进行对估值变化的深度分析
 - 显示"Trading Amount"（交易金额）而非"Volume"（交易量）
@@ -634,26 +638,22 @@ valuationAnalysis (估值分析) - 必须包含以下内容：
 - 每个财务数据、市场数据、行业数据都必须包含可验证的链接
 - 链接应该指向原始数据源，如：公司官网投资者关系页面、SEC EDGAR数据库、财报PDF、权威新闻网站等
 - 在表格中，每行数据都应该包含相应的数据来源链接
-- 重要：所有数据都必须有具体的来源链接，不能使用占位符或通用链接
-- 引用格式示例：
-  - 财务数据：<a href="https://www.sec.gov/edgar/browse/?CIK=SYMBOL" target="_blank" class="data-source-link">SEC 10-K Filing</a>
-  - 股价数据：<a href="https://finance.yahoo.com/quote/SYMBOL" target="_blank" class="data-source-link">Yahoo Finance</a>
-  - 行业数据：<a href="https://example-industry-report.com" target="_blank" class="data-source-link">Industry Report 2024</a>
 
 📊 专业格式要求（参考/Users/yilanliu/opus4modelvaluation/reference-reports/CoreWeave, Inc. (CRWV) - In-Depth Company Profile.pdf）
 - 使用专业的HTML样式，严格按照以下类名：'report-title', 'section-title', 'subsection-title', 'metric-table', 'highlight-box', 'positive', 'negative', 'neutral', 'recommendation-buy', 'recommendation-sell', 'recommendation-hold'
 - 重要：在表格中必须使用正确的CSS类名：
-  - 正面数据使用 class="positive" (绿色)
-  - 负面数据使用 class="negative" (红色)
-  - 中性数据使用 class="neutral" (灰色)
-- 报告标题使用大标题格式：<h1>Company Name (Ticker) Valuation Analysis Report</h1>
-- 重要：不要在每个部分开头添加主要章节标题（如"1. Fundamental Analysis"），这些标题会在PDF模板中自动添加
-- 子部分使用三级标题：<h3>1.1 Company Overview</h3>
+  - 正面数据使用 class="positive"（绿色）
+  - 负面数据使用 class="negative"（红色）
+  - 中性数据使用 class="neutral"（灰色）
+- 报告标题使用大标题格式：<h1>公司名称 (股票代码) 估值分析报告</h1>
+- 重要：不要在每个部分开头添加主要章节标题（如"1. 基本面分析"），这些标题会在PDF模板中自动添加
+- 子部分使用三级标题：<h3>1.1 公司概况</h3>
 - 重要：英文版本中不要包含任何中文标题，所有标题都使用英文
 - 数据表格使用专业格式：表头粗体，数据对齐，边框清晰
 - 重要数据使用高亮框突出显示
 - 百分比和趋势使用颜色编码（绿色=正面，红色=负面，灰色=中性）
 - 估值综合使用客观分析语言，避免投资建议标签
+- 品牌水印：在每个部分的内容末尾添加品牌水印：<div class="brand-watermark" style="font-size: 18px; font-weight: bold; color: #666; text-align: center; margin-top: 20px; padding: 10px;">SuperAnalyst.pro - 专业投资分析平台</div>
 
 📋 内容结构要求：
 - 确保 JSON 格式正确且有效
@@ -661,19 +661,14 @@ valuationAnalysis (估值分析) - 必须包含以下内容：
 - 每个部分必须包含恰好3个数据表格来支撑分析
 - 每个部分还必须包含3个图表，使用以下HTML格式（这是强制要求，必须包含）：
   <div class="chart-container">
-    <h4>Investment Risk-Return Profile</h4>
-    <div class="chart-analysis">
-      <div class="chart-key-points">
-        <div class="key-point">
-          <strong>Asymmetric Returns:</strong> Significant upside potential with limited downside risk given current valuation levels
-        </div>
-        <div class="key-point">
-          <strong>Multiple Catalysts:</strong> Pipeline advancement, cost optimization, and strategic execution providing multiple value creation paths
-        </div>
-        <div class="key-point">
-          <strong>Income Support:</strong> Substantial dividend yield providing returns while awaiting fundamental value recognition
-        </div>
-      </div>
+    <h4>图表标题</h4>
+    <div class="chart-placeholder">
+      <p>这里应该包含具体的图表数据和分析，不包含"图表描述"字样</p>
+      <ul>
+        <li>数据点1：具体数值和趋势</li>
+        <li>数据点2：具体数值和趋势</li>
+        <li>数据点3：具体数值和趋势</li>
+      </ul>
     </div>
   </div>
 - 重要：每个部分必须包含恰好3个图表，不能多也不能少
@@ -707,7 +702,8 @@ valuationAnalysis (估值分析) - 必须包含以下内容：
   "fundamentalAnalysis": "HTML格式的基本面分析内容，只包含基本面相关内容...",
   "businessSegments": "HTML格式的业务板块分析内容，只包含业务板块相关内容...",
   "growthCatalysts": "HTML格式的增长催化剂内容，只包含增长驱动因素相关内容...",
-  "valuationAnalysis": "HTML格式的估值分析内容，只包含估值方法和DCF分析相关内容..."
+  "valuationAnalysis": "HTML格式的估值分析内容，只包含估值方法和DCF分析相关内容...",
+  "references": "HTML格式的引用列表，包含所有数据来源和引用信息..."
 }
 
 **MANDATORY REQUIREMENTS**:
@@ -738,26 +734,7 @@ fundamentalAnalysis (Fundamental Analysis) - Must include:
 - Latest quarterly/annual performance vs. year-over-year comparison (must include specific financial data and growth rates)
 - Revenue growth, profit margins, cash flow analysis (must include historical trends and forecasts)
 - Industry position and competitive advantages (must include market share, competitive landscape analysis)
-- Must include exactly 3 data tables: core financial metrics table, performance comparison table, industry comparison table
-- Each table must use standard HTML format with class="metric-table":
-  <table class="metric-table">
-    <thead>
-      <tr>
-        <th>Metric</th>
-        <th>Current Value</th>
-        <th>Previous Year</th>
-        <th>Change</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Revenue</td>
-        <td>$1.21B</td>
-        <td>$0.39B</td>
-        <td class="positive">+207%</td>
-      </tr>
-    </tbody>
-  </table>
+- Must include 2-3 data tables: core financial metrics table, performance comparison table, industry comparison table
 
 businessSegments (Business Segments) - Must include:
 - Detailed revenue breakdown by business segment (must include specific numbers and percentages)
@@ -766,7 +743,7 @@ businessSegments (Business Segments) - Must include:
 - Market share analysis by business segment (must include competitor comparison)
 - Business segment profitability and profit margins (must include gross margin, net margin comparison)
 - Future business segment growth projections (must include specific forecast data)
-- Must include exactly 3 data tables: revenue structure table, business segment performance table, regional distribution table
+- Must include 2-3 data tables: revenue structure table, business segment performance table, regional distribution table
 
 growthCatalysts (Growth Catalysts) - Must include:
 - Major growth drivers and market opportunities (must include specific market data and opportunity quantification)
@@ -776,7 +753,7 @@ growthCatalysts (Growth Catalysts) - Must include:
 - Technology investments and R&D (must include R&D investment, technology breakthrough points)
 - Regulatory benefits or headwinds (must include specific policy impact analysis)
 - Competitive advantages and moats (must include specific competitive advantage analysis)
-- Must include exactly 3 data tables: growth catalyst impact table, new product timeline table, market opportunity assessment table
+- Must include 2-3 data tables: growth catalyst impact table, new product timeline table, market opportunity assessment table
 
 valuationAnalysis (Valuation Analysis) - Must include:
 - DCF (Discounted Cash Flow) analysis with detailed assumptions (must include key assumptions and calculation results)
@@ -784,7 +761,15 @@ valuationAnalysis (Valuation Analysis) - Must include:
 - Intrinsic value estimation using multiple methods (must include DCF, relative valuation, asset value methods)
 - Valuation synthesis and key findings (avoid direct investment recommendations, only state analytical findings)
 - Key risks and mitigation factors (must include key risk identification and response measures)
-- Must include exactly 3 data tables: DCF valuation table, comparable company valuation table, intrinsic value summary table
+- Must include 2-3 data tables: DCF valuation table, comparable company valuation table, intrinsic value summary table
+
+references (References) - Must include:
+- Comprehensive reference list containing all numbered citations from the report
+- Each reference must include complete source information: author, title, publishing organization, publication date, URL link
+- References must be professionally formatted according to academic standards
+- Must include original sources for all financial data, market data, and industry data
+- References must correspond one-to-one with numbered markers in the report (such as [1], [2], etc.)
+- Reference sources must be authoritative and reliable, including: company earnings reports, SEC filings, industry reports, authoritative news websites, etc.
 
 🔑 Core Requirements:
 - Use the latest financial data (e.g., if today is September 5, 2025, search for 2024 annual reports and 2025 Q1, Q2 earnings); search for the latest relevant information for deep analysis of valuation changes
@@ -796,11 +781,6 @@ valuationAnalysis (Valuation Analysis) - Must include:
 - Every financial data, market data, and industry data must include verifiable links
 - Links should point to original data sources such as: company investor relations pages, SEC EDGAR database, earnings report PDFs, authoritative news websites, etc.
 - In tables, each row of data should include corresponding data source links
-- IMPORTANT: All data must have specific source links, no placeholders or generic links allowed
-- Citation format examples:
-  - Financial data: <a href="https://www.sec.gov/edgar/browse/?CIK=SYMBOL" target="_blank" class="data-source-link">SEC 10-K Filing</a>
-  - Stock price data: <a href="https://finance.yahoo.com/quote/SYMBOL" target="_blank" class="data-source-link">Yahoo Finance</a>
-  - Industry data: <a href="https://example-industry-report.com" target="_blank" class="data-source-link">Industry Report 2024</a>
 
 📊 Professional Format Requirements (Reference: 300053_valuation_report_2025-09-03.pdf):
 - Use professional HTML styling with these exact class names: 'report-title', 'section-title', 'subsection-title', 'metric-table', 'highlight-box', 'positive', 'negative', 'neutral', 'recommendation-buy', 'recommendation-sell', 'recommendation-hold'
@@ -812,27 +792,22 @@ valuationAnalysis (Valuation Analysis) - Must include:
 - Important data highlighted in boxes
 - Percentages and trends color-coded (green=positive, red=negative, gray=neutral)
 - Valuation synthesis uses objective analytical language, avoid investment recommendation labels
+- Brand watermark: Add brand watermark at the end of each section content: <div class="brand-watermark" style="font-size: 18px; font-weight: bold; color: #666; text-align: center; margin-top: 20px; padding: 10px;">SuperAnalyst.pro - Professional Investment Analysis Platform</div>
 
 📋 Content Structure Requirements:
 - Ensure correct and valid JSON format
 - Each section should be comprehensive and detailed (minimum 500 words per section)
 - Each section must include exactly 3 data tables to support analysis
-- All tables must use the metric-table class for proper styling
 - Each section must also include exactly 3 charts using the following HTML format (MANDATORY REQUIREMENT):
   <div class="chart-container">
-    <h4>Investment Risk-Return Profile</h4>
-    <div class="chart-analysis">
-      <div class="chart-key-points">
-        <div class="key-point">
-          <strong>Asymmetric Returns:</strong> Significant upside potential with limited downside risk given current valuation levels
-        </div>
-        <div class="key-point">
-          <strong>Multiple Catalysts:</strong> Pipeline advancement, cost optimization, and strategic execution providing multiple value creation paths
-        </div>
-        <div class="key-point">
-          <strong>Income Support:</strong> Substantial dividend yield providing returns while awaiting fundamental value recognition
-        </div>
-      </div>
+    <h4>Chart Title</h4>
+    <div class="chart-placeholder">
+      <p>This should contain specific chart data and analysis, without "Chart Description" text</p>
+      <ul>
+        <li>Data Point 1: Specific values and trends</li>
+        <li>Data Point 2: Specific values and trends</li>
+        <li>Data Point 3: Specific values and trends</li>
+      </ul>
     </div>
   </div>
 - IMPORTANT: Each section must contain exactly 3 charts, no more, no less
@@ -853,7 +828,14 @@ valuationAnalysis (Valuation Analysis) - Must include:
 - Valuation analysis section content too extensive (keep within reasonable scope)
 - Any section content empty or too brief
 
-- Return only a valid JSON object containing these four sections, with content as HTML strings.`
+- Return only a valid JSON object containing these five sections, with content as HTML strings:
+{
+  "fundamentalAnalysis": "HTML formatted fundamental analysis content...",
+  "businessSegments": "HTML formatted business segments analysis content...",
+  "growthCatalysts": "HTML formatted growth catalysts content...",
+  "valuationAnalysis": "HTML formatted valuation analysis content...",
+  "references": "HTML formatted references list with all data sources and citations..."
+}`
   }
 }
 
@@ -957,7 +939,8 @@ function parseNaturalLanguageReport(content: string, locale: string): any {
     fundamentalAnalysis: '',
     businessSegments: '',
     growthCatalysts: '',
-    valuationAnalysis: ''
+    valuationAnalysis: '',
+    references: ''
   }
   
     // 定义章节模式（中英文）- 更精确的模式匹配
@@ -989,9 +972,17 @@ function parseNaturalLanguageReport(content: string, locale: string): any {
     {
       key: 'valuationAnalysis',
       patterns: [
-        /"valuationAnalysis":\s*"([^"]*(?:"[^"]*"[^"]*)*)"[^}]*$/,
-        /(?:估值分析|价值评估|Valuation Analysis?)[\s\S]*?(?=\s*$|\s*"fundamentalAnalysis"|\s*"businessSegments"|\s*"growthCatalysts")/i,
-        /(?:DCF|分部估值|可比公司|投资建议)[\s\S]*?(?=\s*$|\s*"fundamentalAnalysis"|\s*"businessSegments"|\s*"growthCatalysts")/i
+        /"valuationAnalysis":\s*"([^"]*(?:"[^"]*"[^"]*)*)"(?=\s*,\s*"references")/,
+        /(?:估值分析|价值评估|Valuation Analysis?)[\s\S]*?(?=(?:引用|References?)|$)/i,
+        /(?:DCF|分部估值|可比公司|投资建议)[\s\S]*?(?=(?:引用|References?)|$)/i
+      ]
+    },
+    {
+      key: 'references',
+      patterns: [
+        /"references":\s*"([^"]*(?:"[^"]*"[^"]*)*)"[^}]*$/,
+        /(?:引用|参考文献|References?)[\s\S]*?(?=\s*$)/i,
+        /(?:数据来源|引用列表|Reference List)[\s\S]*?(?=\s*$)/i
       ]
     }
   ]
@@ -1046,12 +1037,17 @@ function parseNaturalLanguageReport(content: string, locale: string): any {
           .replace(/about:blank[\s\S]*?(?=\n|$)/gmi, '')
           .trim()
         
-        // 如果是英文版本，移除中文标题
+        // 如果是英文版本，移除中文标题和内容
         if (locale === 'en') {
           sectionContent = sectionContent
             .replace(/<h[1-6][^>]*>[\s\S]*?[\u4e00-\u9fff]+[\s\S]*?<\/h[1-6]>/g, '') // 移除包含中文的标题
             .replace(/^[\s]*[\u4e00-\u9fff]+[\s\S]*?(?=\n|$)/gm, '') // 移除以中文开头的行
             .replace(/[\u4e00-\u9fff]+[\s\S]*?(?=\n|$)/gm, '') // 移除包含中文的行
+            .replace(/[\u4e00-\u9fff]+/g, '') // 移除所有中文字符
+            .replace(/<p>[\s\S]*?[\u4e00-\u9fff]+[\s\S]*?<\/p>/g, '') // 移除包含中文的段落
+            .replace(/<li>[\s\S]*?[\u4e00-\u9fff]+[\s\S]*?<\/li>/g, '') // 移除包含中文的列表项
+            .replace(/<td>[\s\S]*?[\u4e00-\u9fff]+[\s\S]*?<\/td>/g, '') // 移除包含中文的表格单元格
+            .replace(/<th>[\s\S]*?[\u4e00-\u9fff]+[\s\S]*?<\/th>/g, '') // 移除包含中文的表格标题
             .trim()
         }
         
@@ -1105,7 +1101,11 @@ function parseNaturalLanguageReport(content: string, locale: string): any {
   // 如果还有空的部分，用默认内容填充
   Object.keys(report).forEach(key => {
     if (!report[key] || report[key].length < 50) {
-      report[key] = `<h3>${key.replace(/([A-Z])/g, ' $1').trim()}</h3><p>暂时无法获取此部分的详细信息，请稍后重试。</p>`
+      if (key === 'references') {
+        report[key] = `<h3>References</h3><p>References will be automatically generated based on the data sources used in this report.</p>`
+      } else {
+        report[key] = `<h3>${key.replace(/([A-Z])/g, ' $1').trim()}</h3><p>暂时无法获取此部分的详细信息，请稍后重试。</p>`
+      }
       console.log(`⚠️ 使用默认内容填充 ${key}`)
     }
   })

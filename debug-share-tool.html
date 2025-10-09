@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Share Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .debug-info {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .debug-info h3 {
+            margin: 0 0 8px 0;
+            color: #92400e;
+        }
+        .debug-info p {
+            margin: 4px 0;
+            color: #92400e;
+        }
+        .test-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 8px;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .result {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="debug-info">
+            <h3>🔍 Debug Share Tool</h3>
+            <p>这个页面用于测试ShareTool组件的功能</p>
+            <p>点击下面的按钮来测试不同的功能</p>
+        </div>
+
+        <button class="test-button" onclick="testShareToolAPI()">测试 ShareTool API</button>
+        <button class="test-button" onclick="testDailyAlphaBrief()">测试 Daily Alpha Brief</button>
+        <button class="test-button" onclick="testTodaysReport()">测试 Today's Report</button>
+        <button class="test-button" onclick="testShareURL()">测试 Share URL 生成</button>
+
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        function showResult(text) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = text;
+            resultDiv.style.display = 'block';
+        }
+
+        async function testShareToolAPI() {
+            try {
+                showResult('正在测试 ShareTool API...');
+                
+                // 测试今日报告API
+                const response = await fetch('http://localhost:3002/api/todays-report');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const report = data.data;
+                    const seoKeywords = `${report.company.toLowerCase().replace(/\s+/g, '-')}-${report.symbol.toLowerCase()}-analysis-report`;
+                    const seoUrl = `https://superanalyst.pro/en/reports/${seoKeywords}-${report.id}`;
+                    
+                    showResult(`✅ ShareTool API 测试成功！
+                    
+报告信息:
+- 公司: ${report.company}
+- 股票符号: ${report.symbol}
+- 报告ID: ${report.id}
+- 报告标题: ${report.title}
+
+SEO URL:
+${seoUrl}
+
+原始URL:
+https://superanalyst.pro/en/reports/${report.id}`);
+                } else {
+                    showResult(`❌ ShareTool API 测试失败: ${data.error}`);
+                }
+            } catch (error) {
+                showResult(`❌ ShareTool API 测试错误: ${error.message}`);
+            }
+        }
+
+        async function testDailyAlphaBrief() {
+            try {
+                showResult('正在测试 Daily Alpha Brief 页面...');
+                
+                const response = await fetch('http://localhost:3002/en');
+                const html = await response.text();
+                
+                if (html.includes('Daily Alpha Brief')) {
+                    showResult(`✅ Daily Alpha Brief 页面加载成功！
+                    
+页面包含:
+- Daily Alpha Brief 按钮: ${html.includes('Daily Alpha Brief') ? '✅' : '❌'}
+- Share 按钮: ${html.includes('Share') ? '✅' : '❌'}
+- ShareTool 组件: ${html.includes('ShareTool') ? '✅' : '❌'}
+
+注意: ShareTool 组件只在点击 Share 按钮后才会显示`);
+                } else {
+                    showResult('❌ Daily Alpha Brief 页面加载失败');
+                }
+            } catch (error) {
+                showResult(`❌ Daily Alpha Brief 测试错误: ${error.message}`);
+            }
+        }
+
+        async function testTodaysReport() {
+            try {
+                showResult('正在测试 Today\'s Report 数据...');
+                
+                const response = await fetch('http://localhost:3002/api/todays-report');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const report = data.data;
+                    showResult(`✅ Today's Report 数据获取成功！
+                    
+报告详情:
+- ID: ${report.id}
+- 公司: ${report.company}
+- 股票符号: ${report.symbol}
+- 标题: ${report.title}
+- 日期: ${report.date}
+- 摘要: ${report.summary}
+
+ShareTool 需要的参数:
+- reportId: ${report.id}
+- reportTitle: ${report.title}
+- company: ${report.company}
+- symbol: ${report.symbol}
+- locale: en`);
+                } else {
+                    showResult(`❌ Today's Report 数据获取失败: ${data.error}`);
+                }
+            } catch (error) {
+                showResult(`❌ Today's Report 测试错误: ${error.message}`);
+            }
+        }
+
+        function testShareURL() {
+            try {
+                showResult('正在测试 Share URL 生成...');
+                
+                const company = 'Coinbase Global, Inc.';
+                const symbol = 'COIN';
+                const reportId = 'coin-2025-10-05';
+                const locale = 'en';
+                
+                const seoKeywords = `${company.toLowerCase().replace(/\s+/g, '-')}-${symbol.toLowerCase()}-analysis-report`;
+                const shareUrl = `https://superanalyst.pro/${locale}/reports/${reportId}`;
+                const seoUrl = `https://superanalyst.pro/${locale}/reports/${seoKeywords}-${reportId}`;
+                
+                showResult(`✅ Share URL 生成成功！
+                
+原始 URL:
+${shareUrl}
+
+SEO 优化 URL:
+${seoUrl}
+
+SEO 关键词:
+${seoKeywords}
+
+LinkedIn 分享 URL:
+https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(seoUrl)}
+
+Twitter 分享 URL:
+https://twitter.com/intent/tweet?text=${encodeURIComponent(`🚀 Exciting market insights! Just discovered this comprehensive analysis of ${company} (${symbol}) on SuperAnalyst Pro. Check it out: ${seoUrl}`)}&url=${encodeURIComponent(seoUrl)}`);
+            } catch (error) {
+                showResult(`❌ Share URL 生成错误: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
+

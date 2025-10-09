@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareTool Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .platform-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .platform-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ShareTool Component Test</h1>
+        
+        <div class="test-section">
+            <h2>Expected Platforms</h2>
+            <div class="platform-list">
+                <div class="platform-item">
+                    <strong>LinkedIn</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Reddit</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Twitter</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Facebook</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>WhatsApp</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Telegram</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Discord</strong>
+                    <div class="status success">✅ Expected (NEW)</div>
+                </div>
+                <div class="platform-item">
+                    <strong>Email</strong>
+                    <div class="status success">✅ Expected</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Instructions</h2>
+            <ol>
+                <li>Go to the main application</li>
+                <li>Click on "Share" button</li>
+                <li>Check if all 8 platforms are visible</li>
+                <li>Test each platform to ensure they include the article link</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>Expected Share URLs</h2>
+            <p>All share templates should include the article URL in this format:</p>
+            <code>https://superanalyst.pro/{locale}/reports/{company}-{symbol}-analysis-report-{reportId}</code>
+        </div>
+
+        <div class="test-section">
+            <h2>Troubleshooting</h2>
+            <ul>
+                <li>Clear browser cache (Ctrl+F5 or Cmd+Shift+R)</li>
+                <li>Check browser console for errors</li>
+                <li>Ensure development server is running</li>
+                <li>Verify ShareTool component is imported correctly</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        console.log('ShareTool Test Page Loaded');
+        console.log('Expected platforms: LinkedIn, Reddit, Twitter, Facebook, WhatsApp, Telegram, Discord, Email');
+        console.log('Total expected: 8 platforms');
+    </script>
+</body>
+</html>

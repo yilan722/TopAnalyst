@@ -314,4 +314,135 @@ a {
   white-space: normal !important;
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
+}
+
+/* Chart container styles */
+.report-content .chart-container {
+  @apply mb-8 p-6 bg-white rounded-xl shadow-lg border border-gray-200 !important;
+  position: relative !important;
+}
+
+.report-content .chart-container h4 {
+  @apply text-lg font-semibold text-gray-800 mb-4 !important;
+  color: #1f2937 !important;
+  border-bottom: 2px solid #3b82f6 !important;
+  padding-bottom: 8px !important;
+}
+
+.report-content .chart-placeholder {
+  @apply p-4 bg-gray-50 rounded-lg !important;
+}
+
+/* Chart visual styles */
+.report-content .chart-visual {
+  @apply p-4 bg-white rounded-lg border border-gray-200 !important;
+}
+
+.report-content .chart-title {
+  @apply text-lg font-bold text-gray-800 mb-4 text-center !important;
+  color: #1f2937 !important;
+}
+
+.report-content .chart-description {
+  @apply text-sm text-gray-600 mb-4 text-center !important;
+}
+
+/* Data bar chart styles */
+.report-content .chart-data {
+  @apply space-y-3 mb-4 !important;
+}
+
+.report-content .data-bar {
+  @apply h-8 rounded-lg flex items-center justify-between px-4 text-white font-semibold text-sm !important;
+  transition: all 0.3s ease !important;
+}
+
+.report-content .data-bar:hover {
+  transform: translateX(5px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Chart legend styles */
+.report-content .chart-legend {
+  @apply flex flex-wrap gap-4 justify-center mt-4 !important;
+}
+
+.report-content .legend-item {
+  @apply text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full !important;
+}
+
+/* Timeline chart styles */
+.report-content .chart-timeline {
+  @apply flex justify-between items-center space-x-4 !important;
+}
+
+.report-content .timeline-item {
+  @apply flex flex-col items-center text-center !important;
+}
+
+.report-content .timeline-year {
+  @apply text-lg font-bold text-blue-600 mb-2 !important;
+}
+
+.report-content .timeline-data {
+  @apply text-sm text-gray-700 bg-blue-50 px-3 py-2 rounded-lg !important;
+}
+
+/* Investment chart styles */
+.report-content .investment-chart {
+  @apply space-y-4 !important;
+}
+
+.report-content .investment-item {
+  @apply flex justify-between items-center p-4 bg-gray-50 rounded-lg !important;
+}
+
+.report-content .investment-label {
+  @apply text-sm font-medium text-gray-700 !important;
+}
+
+.report-content .investment-amount {
+  @apply text-sm font-bold text-blue-600 !important;
+}
+
+/* Data points styles */
+.report-content .data-points {
+  @apply space-y-2 !important;
+}
+
+.report-content .data-point {
+  @apply text-sm text-gray-700 bg-gray-100 px-3 py-2 rounded-lg !important;
+}
+
+/* References section styles */
+.report-content .references-section {
+  @apply mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200 !important;
+}
+
+.report-content .references-section h3 {
+  @apply text-xl font-bold text-gray-800 mb-4 !important;
+  color: #1f2937 !important;
+  border-bottom: 2px solid #3b82f6 !important;
+  padding-bottom: 8px !important;
+}
+
+.report-content .references-list {
+  @apply space-y-2 !important;
+}
+
+.report-content .references-list li {
+  @apply text-sm text-gray-700 !important;
+}
+
+/* Watermark styles */
+.report-content .watermark {
+  @apply fixed bottom-4 right-4 z-50 !important;
+  opacity: 0.1 !important;
+  pointer-events: none !important;
+}
+
+.report-content .watermark-text {
+  @apply text-2xl font-bold text-gray-400 !important;
+  transform: rotate(-45deg) !important;
+  white-space: nowrap !important;
 } 

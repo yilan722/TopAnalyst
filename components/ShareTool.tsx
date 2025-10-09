@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Linkedin, Copy, Check, ExternalLink, FileText, Eye, Share2, Twitter, Facebook, Mail, MessageCircle } from 'lucide-react'
+import { Linkedin, Copy, Check, ExternalLink, FileText, Eye, Share2, Twitter, Facebook, Mail, MessageCircle, Smartphone, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface ShareToolProps {
@@ -10,6 +10,7 @@ interface ShareToolProps {
   company: string
   symbol: string
   locale: 'zh' | 'en'
+  onClose?: () => void
 }
 
 export default function ShareTool({ 
@@ -17,13 +18,24 @@ export default function ShareTool({
   reportTitle, 
   company, 
   symbol, 
-  locale 
+  locale,
+  onClose
 }: ShareToolProps) {
   const [copied, setCopied] = useState(false)
-  const [showPreview, setShowPreview] = useState(false)
-  const [activeTab, setActiveTab] = useState<'linkedin' | 'reddit' | 'twitter' | 'facebook' | 'email'>('linkedin')
+  const [showPreview, setShowPreview] = useState(true)
+  const [activeTab, setActiveTab] = useState<'linkedin' | 'reddit' | 'twitter' | 'facebook' | 'email' | 'whatsapp' | 'telegram' | 'discord'>('linkedin')
 
-  const shareUrl = `https://superanalyst.pro/${locale}/share/${reportId}`
+  // 生成SEO优化的URL
+  const generateSEOUrl = () => {
+    const seoKeywords = `${company.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-')}-${symbol.toLowerCase()}-analysis-report`
+    // 使用公开的URL而不是localhost
+    const baseUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost' 
+      ? 'https://superanalyst.pro' 
+      : (typeof window !== 'undefined' ? window.location.origin : 'https://superanalyst.pro')
+    return `${baseUrl}/${locale}/reports/${seoKeywords}-${reportId}`
+  }
+  
+  const shareUrl = generateSEOUrl()
   
   const shareTemplates = {
     linkedin: {
@@ -34,14 +46,20 @@ The report covers everything from fundamental analysis to growth catalysts and v
 Key highlights:
 ✅ Real-time market data integration
 ✅ AI-driven fundamental analysis  
-✅ Professional valuation modeling
+✅ Professional valuation modeling (DCF, comparable analysis)
 ✅ Risk assessment and mitigation strategies
+✅ Complete financial metrics and ratios
+✅ Growth catalyst identification
+✅ Industry positioning analysis
 
 This is exactly the kind of research quality I look for when making investment decisions. The platform democratizes access to professional equity research that was previously only available to Wall Street analysts.
 
-Check out the full analysis: ${shareUrl}
+📊 Report Details:
+• Company: ${company} (${symbol})
+• Analysis Type: Comprehensive Equity Research
+• Report URL: ${shareUrl}
 
-#EquityResearch #InvestmentAnalysis #AI #FinTech #${symbol} #MarketInsights #SuperAnalystPro`,
+#EquityResearch #InvestmentAnalysis #AI #FinTech #${symbol} #MarketInsights #SuperAnalystPro #StockAnalysis #FinancialResearch`,
 
       zh: `🚀 激动人心的市场洞察！刚刚在SuperAnalyst Pro上发现了这份关于${company} (${symbol})的综合分析报告。
 
@@ -50,14 +68,20 @@ Check out the full analysis: ${shareUrl}
 主要亮点：
 ✅ 实时市场数据整合
 ✅ AI驱动的基本面分析
-✅ 专业估值建模
+✅ 专业估值建模（DCF、可比公司分析）
 ✅ 风险评估和缓解策略
+✅ 完整财务指标和比率
+✅ 增长催化剂识别
+✅ 行业定位分析
 
 这正是我在做投资决策时寻找的研究质量。该平台民主化了专业股票研究的获取，这些研究以前只对华尔街分析师开放。
 
-查看完整分析：${shareUrl}
+📊 报告详情：
+• 公司：${company} (${symbol})
+• 分析类型：综合股权研究
+• 报告链接：${shareUrl}
 
-#股票研究 #投资分析 #AI #金融科技 #${symbol} #市场洞察 #SuperAnalystPro`
+#股票研究 #投资分析 #AI #金融科技 #${symbol} #市场洞察 #SuperAnalystPro #股票分析 #金融研究`
     },
     reddit: {
       en: `**${company} (${symbol}) - Comprehensive Analysis Report**
@@ -215,6 +239,127 @@ Best regards`,
 
 此致
 敬礼`
+    },
+    whatsapp: {
+      en: `🚀 *${company} (${symbol}) Analysis Report* 📊
+
+Just found this comprehensive equity research on SuperAnalyst Pro! 
+
+*Key Highlights:*
+✅ AI-powered fundamental analysis
+✅ Professional valuation modeling
+✅ Growth catalyst identification
+✅ Risk assessment & mitigation
+
+*Report Details:*
+• Company: ${company} (${symbol})
+• Analysis: Comprehensive Equity Research
+• Platform: SuperAnalyst Pro
+
+Check it out: ${shareUrl}
+
+#EquityResearch #${symbol} #InvestmentAnalysis #AI #FinTech`,
+
+      zh: `🚀 *${company} (${symbol}) 分析报告* 📊
+
+刚刚在SuperAnalyst Pro上发现了这份综合股权研究！
+
+*主要亮点：*
+✅ AI驱动的基本面分析
+✅ 专业估值建模
+✅ 增长催化剂识别
+✅ 风险评估和缓解
+
+*报告详情：*
+• 公司：${company} (${symbol})
+• 分析：综合股权研究
+• 平台：SuperAnalyst Pro
+
+查看报告：${shareUrl}
+
+#股票研究 #${symbol} #投资分析 #AI #金融科技`
+    },
+    telegram: {
+      en: `🚀 *${company} (${symbol}) Analysis Report* 📊
+
+Just discovered this comprehensive equity research on SuperAnalyst Pro!
+
+*Key Features:*
+✅ AI-powered fundamental analysis
+✅ Professional valuation modeling (DCF, comparable analysis)
+✅ Complete financial metrics and ratios
+✅ Growth catalyst identification
+✅ Industry positioning analysis
+
+*Report Details:*
+• Company: ${company} (${symbol})
+• Analysis Type: Comprehensive Equity Research
+• Platform: SuperAnalyst Pro
+
+Full report: ${shareUrl}
+
+#EquityResearch #${symbol} #InvestmentAnalysis #AI #FinTech #StockAnalysis`,
+
+      zh: `🚀 *${company} (${symbol}) 分析报告* 📊
+
+刚刚在SuperAnalyst Pro上发现了这份综合股权研究！
+
+*主要功能：*
+✅ AI驱动的基本面分析
+✅ 专业估值建模（DCF、可比公司分析）
+✅ 完整财务指标和比率
+✅ 增长催化剂识别
+✅ 行业定位分析
+
+*报告详情：*
+• 公司：${company} (${symbol})
+• 分析类型：综合股权研究
+• 平台：SuperAnalyst Pro
+
+完整报告：${shareUrl}
+
+#股票研究 #${symbol} #投资分析 #AI #金融科技 #股票分析`
+    },
+    discord: {
+      en: `🚀 **${company} (${symbol}) Analysis Report** 📊
+
+Just discovered this comprehensive equity research on SuperAnalyst Pro!
+
+**Key Features:**
+✅ AI-powered fundamental analysis
+✅ Professional valuation modeling (DCF, comparable analysis)
+✅ Complete financial metrics and ratios
+✅ Growth catalyst identification
+✅ Industry positioning analysis
+
+**Report Details:**
+• Company: ${company} (${symbol})
+• Analysis Type: Comprehensive Equity Research
+• Platform: SuperAnalyst Pro
+
+Full report: ${shareUrl}
+
+#EquityResearch #${symbol} #InvestmentAnalysis #AI #FinTech #StockAnalysis`,
+
+      zh: `🚀 **${company} (${symbol}) 分析报告** 📊
+
+刚刚在SuperAnalyst Pro上发现了这份综合股权研究！
+
+**主要功能：**
+✅ AI驱动的基本面分析
+✅ 专业估值建模（DCF、可比公司分析）
+✅ 完整财务指标和比率
+✅ 增长催化剂识别
+✅ 行业定位分析
+
+**报告详情：**
+• 公司：${company} (${symbol})
+• 分析类型：综合股权研究
+• 平台：SuperAnalyst Pro
+
+完整报告：${shareUrl}
+
+#股票研究 #${symbol} #投资分析 #AI #金融科技 #股票分析`
     }
   }
 
@@ -249,6 +394,12 @@ Best regards`,
         return `https://www.facebook.com/sharer/sharer.php?u=${url}`
       case 'email':
         return `mailto:?subject=${encodeURIComponent(`${reportTitle} - SuperAnalyst Pro`)}&body=${text}`
+      case 'whatsapp':
+        return `https://wa.me/?text=${encodeURIComponent(getCurrentTemplate())}`
+      case 'telegram':
+        return `https://t.me/share/url?url=${url}&text=${encodeURIComponent(getCurrentTemplate())}`
+      case 'discord':
+        return `https://discord.com/channels/@me`
       default:
         return shareUrl
     }
@@ -264,7 +415,14 @@ Best regards`,
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -279,15 +437,25 @@ Best regards`,
             </p>
           </div>
         </div>
-        <button
-          onClick={() => setShowPreview(!showPreview)}
-          className="flex items-center space-x-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-        >
-          <Eye className="w-4 h-4" />
-          <span className="text-sm font-medium">
-            {showPreview ? (locale === 'zh' ? '隐藏预览' : 'Hide Preview') : (locale === 'zh' ? '预览' : 'Preview')}
-          </span>
-        </button>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setShowPreview(!showPreview)}
+            className="flex items-center space-x-2 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+          >
+            <Eye className="w-4 h-4" />
+            <span className="text-sm font-medium">
+              {showPreview ? (locale === 'zh' ? '隐藏预览' : 'Hide Preview') : (locale === 'zh' ? '预览' : 'Preview')}
+            </span>
+          </button>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Platform Tabs */}
@@ -297,6 +465,9 @@ Best regards`,
           { key: 'reddit', icon: MessageCircle, label: 'Reddit' },
           { key: 'twitter', icon: Twitter, label: 'Twitter' },
           { key: 'facebook', icon: Facebook, label: 'Facebook' },
+          { key: 'whatsapp', icon: Smartphone, label: 'WhatsApp' },
+          { key: 'telegram', icon: MessageCircle, label: 'Telegram' },
+          { key: 'discord', icon: MessageCircle, label: 'Discord' },
           { key: 'email', icon: Mail, label: locale === 'zh' ? '邮件' : 'Email' }
         ].map(({ key, icon: Icon, label }) => (
           <button
@@ -366,6 +537,7 @@ Best regards`,
             {locale === 'zh' ? '分享到' : 'Share to'} {activeTab === 'email' ? (locale === 'zh' ? '邮件' : 'Email') : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
           </span>
         </button>
+      </div>
       </div>
     </div>
   )

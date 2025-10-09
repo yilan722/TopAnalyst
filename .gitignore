@@ -107,4 +107,4 @@ jspm_packages/
 .next/cache/
 cache/ .env
 
-.venv/
+.venv/*.mp4

@@ -6,6 +6,7 @@ export type TranslationKeys = {
   title: string
   subtitle: string
   searchPlaceholder: string
+  searchInputPlaceholder: string
   searchButton: string
   generateReport: string
   loading: string
@@ -308,6 +309,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     
     // Search Form
     searchPlaceholder: 'Currently supports US stocks, A-shares and HK stocks (e.g., AAPL, 002915, 1347.HK)',
+    searchInputPlaceholder: 'Input Company Ticker Here (e.g., AAPL, 002915, 1347.HK)',
     searchButton: 'Search',
     generateReport: 'Generate Report',
     
@@ -355,7 +357,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     
     // Sidebar Navigation
     home: 'Home',
-    homeDescription: 'Stock Search & Analysis',
+    homeDescription: 'Report Generation',
     dailyAlphaBrief: 'Daily Alpha Brief',
     dailyAlphaDescription: 'Daily Hot Stock Research',
     insightRefinery: 'Insight Refinery',
@@ -628,6 +630,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     
     // Search Form
     searchPlaceholder: '目前支持美股、A股和港股 (例如: AAPL, 002915, 1347.HK)',
+    searchInputPlaceholder: '输入公司股票代码 (例如: AAPL, 002915, 1347.HK)',
     searchButton: '搜索',
     generateReport: '生成报告',
     
@@ -675,7 +678,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     
     // 侧边栏导航
     home: '首页',
-    homeDescription: '股票搜索与分析',
+    homeDescription: '报告生成',
     dailyAlphaBrief: '每日热门股票',
     dailyAlphaDescription: '每日热门股票基本面研究',
     insightRefinery: '洞察精炼器',

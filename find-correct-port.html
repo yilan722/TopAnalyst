@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Correct Port</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .port-test {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .port-test h3 {
+            margin: 0 0 16px 0;
+            color: #1e293b;
+        }
+        .port-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .port-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .port-item h4 {
+            margin: 0 0 8px 0;
+            color: #374151;
+        }
+        .port-item p {
+            margin: 4px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status.online {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status.offline {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        .instructions {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .instructions h3 {
+            margin: 0 0 8px 0;
+            color: #0c4a6e;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 4px;
+            color: #0c4a6e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="instructions">
+            <h3>🔍 找到正确的端口和页面</h3>
+            <ol>
+                <li>查看下面哪个端口显示"Daily Alpha Brief"按钮</li>
+                <li>点击该端口的"Daily Alpha Brief"按钮</li>
+                <li>在"今日必读报告"部分点击"分享"按钮</li>
+                <li>查看是否显示SEO优化的分享界面</li>
+            </ol>
+        </div>
+
+        <div class="port-test">
+            <h3>端口测试结果</h3>
+            <div class="port-info" id="portInfo">
+                <div class="port-item">
+                    <h4>端口 3000</h4>
+                    <p>状态: <span class="status" id="status3000">检查中...</span></p>
+                    <p>页面类型: <span id="type3000">检查中...</span></p>
+                    <p>有Daily Alpha Brief: <span id="dab3000">检查中...</span></p>
+                    <p><a href="http://localhost:3000/en" target="_blank">打开端口 3000</a></p>
+                </div>
+                <div class="port-item">
+                    <h4>端口 3001</h4>
+                    <p>状态: <span class="status" id="status3001">检查中...</span></p>
+                    <p>页面类型: <span id="type3001">检查中...</span></p>
+                    <p>有Daily Alpha Brief: <span id="dab3001">检查中...</span></p>
+                    <p><a href="http://localhost:3001/en" target="_blank">打开端口 3001</a></p>
+                </div>
+                <div class="port-item">
+                    <h4>端口 3002</h4>
+                    <p>状态: <span class="status" id="status3002">检查中...</span></p>
+                    <p>页面类型: <span id="type3002">检查中...</span></p>
+                    <p>有Daily Alpha Brief: <span id="dab3002">检查中...</span></p>
+                    <p><a href="http://localhost:3002/en" target="_blank">打开端口 3002</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function testPort(port) {
+            try {
+                const response = await fetch(`http://localhost:${port}/en`);
+                const html = await response.text();
+                
+                const hasDAB = html.includes('Daily Alpha Brief');
+                const hasShare = html.includes('Share');
+                const hasDownload = html.includes('Download');
+                
+                document.getElementById(`status${port}`).textContent = '在线';
+                document.getElementById(`status${port}`).className = 'status online';
+                
+                if (hasDAB) {
+                    document.getElementById(`type${port}`).textContent = 'Daily Alpha Brief 页面';
+                    document.getElementById(`dab${port}`).textContent = '✅ 是';
+                } else {
+                    document.getElementById(`type${port}`).textContent = '主页';
+                    document.getElementById(`dab${port}`).textContent = '❌ 否';
+                }
+                
+                // 检查是否有download按钮
+                if (hasDownload) {
+                    document.getElementById(`dab${port}`).textContent += ' (有Download按钮)';
+                }
+                
+            } catch (error) {
+                document.getElementById(`status${port}`).textContent = '离线';
+                document.getElementById(`status${port}`).className = 'status offline';
+                document.getElementById(`type${port}`).textContent = '无法访问';
+                document.getElementById(`dab${port}`).textContent = '❌ 否';
+            }
+        }
+
+        // 测试所有端口
+        testPort(3000);
+        testPort(3001);
+        testPort(3002);
+    </script>
+</body>
+</html>
+

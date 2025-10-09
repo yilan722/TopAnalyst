@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报告生成格式修复测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .test-section h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .test-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 10px 10px 10px 0;
+            transition: transform 0.2s;
+        }
+        .test-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .verification {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .verification h4 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+        .verification ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .verification li {
+            margin: 5px 0;
+            color: #2e7d32;
+        }
+        .problem-analysis {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .problem-analysis h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .solution {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .solution h4 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 报告生成格式修复测试</h1>
+            <p>修复MU报告生成时的格式错乱问题</p>
+        </div>
+        
+        <div class="content">
+            <div class="problem-analysis">
+                <h4>🚨 发现的问题</h4>
+                <ul>
+                    <li><strong>数据结构不匹配</strong>：生成的报告数据格式与ReportViewer期望的格式不一致</li>
+                    <li><strong>内容截断</strong>：Business Segments部分只显示部分内容，被错误截断</li>
+                    <li><strong>正则表达式过于严格</strong>：自然语言解析函数中的模式匹配导致内容丢失</li>
+                    <li><strong>章节映射错误</strong>：数据库中的sections结构与前端显示不匹配</li>
+                </ul>
+            </div>
+
+            <div class="solution">
+                <h4>✅ 实施的修复</h4>
+                <ul>
+                    <li><strong>修复数据结构映射</strong>：将报告内容转换为ReportViewer期望的格式</li>
+                    <li><strong>改进正则表达式</strong>：添加更多模式匹配，减少内容截断</li>
+                    <li><strong>增强内容恢复</strong>：当检测到内容截断时，尝试从原始内容恢复</li>
+                    <li><strong>优化章节映射</strong>：确保sections正确映射到前端显示</li>
+                </ul>
+            </div>
+
+            <div class="test-section">
+                <h3>🧪 测试步骤</h3>
+                <ol>
+                    <li>访问主页并生成MU报告</li>
+                    <li>检查报告是否显示完整的四个章节</li>
+                    <li>验证Business Segments部分是否显示完整内容</li>
+                    <li>确认Valuation Analysis部分有详细内容</li>
+                    <li>检查Growth Catalysts部分是否包含财务数据</li>
+                </ol>
+            </div>
+
+            <div class="test-section">
+                <h3>🔧 修复详情</h3>
+                <div class="code-block">
+// 修复数据结构映射
+const formattedReportData = {
+  sections: {
+    '1. Fundamental Analysis': reportContent.fundamentalAnalysis || '',
+    '2. Business Analysis': reportContent.businessSegments || '',
+    '3. Growth Catalysts': reportContent.growthCatalysts || '',
+    '4. Valuation Analysis': reportContent.valuationAnalysis || ''
+  },
+  keyInsights: [...],
+  charts: [],
+  tables: []
+}
+                </div>
+                
+                <div class="code-block">
+// 改进正则表达式模式
+patterns: [
+  /(?:business segments reveal|dominant.*?sector)[\s\S]*?(?=(?:增长|Growth)|(?:估值|Valuation)|$)/i,
+  /(?:cloud.*?data center|strategic positioning)[\s\S]*?(?=(?:增长|Growth)|(?:估值|Valuation)|$)/i
+]
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h3>📊 测试链接</h3>
+                <a href="http://localhost:3000/en" target="_blank" class="test-link">
+                    🚀 打开主页生成MU报告
+                </a>
+                <a href="http://localhost:3000/en/reports" target="_blank" class="test-link">
+                    📋 查看历史报告
+                </a>
+            </div>
+
+            <div class="verification">
+                <h4>✅ 预期结果</h4>
+                <ul>
+                    <li>✅ MU报告生成后显示完整的四个章节</li>
+                    <li>✅ Business Segments部分显示完整内容，不再被截断</li>
+                    <li>✅ Valuation Analysis部分包含详细的DCF分析</li>
+                    <li>✅ Growth Catalysts部分显示完整的财务数据</li>
+                    <li>✅ 所有章节内容格式正确，无错乱</li>
+                </ul>
+            </div>
+
+            <div class="test-section">
+                <h3>🎯 关键修复点</h3>
+                <ul>
+                    <li><strong>数据结构统一</strong>：确保生成的报告数据与ReportViewer期望的格式完全匹配</li>
+                    <li><strong>内容完整性</strong>：改进解析算法，确保所有章节内容完整显示</li>
+                    <li><strong>错误恢复</strong>：当检测到内容截断时，自动尝试恢复完整内容</li>
+                    <li><strong>格式一致性</strong>：确保所有报告都使用相同的格式标准</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

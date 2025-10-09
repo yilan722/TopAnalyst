@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { TrendingUp, TrendingDown, BarChart3, DollarSign, Users, Calendar, ExternalLink, FileText, Lock, Eye, Share2 } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Users, Calendar, ExternalLink, FileText, Lock, Eye, Share2 } from 'lucide-react'
 import { type Locale } from '../app/services/i18n'
 import { getTranslation } from '../app/services/translations'
 import toast from 'react-hot-toast'
@@ -9,7 +9,6 @@ import LinkedInShareTool from './LinkedInShareTool'
 import PaginatedHistoricalReports from './PaginatedHistoricalReports'
 import ReportDetailModal from './ReportDetailModal'
 import ShareTool from './ShareTool'
-import ShareAnalytics from './ShareAnalytics'
 
 // 翻译函数
 const translateContent = async (text: string, targetLang: string): Promise<string> => {
@@ -119,7 +118,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
   const [isLoadingHistorical, setIsLoadingHistorical] = useState(false)
   const [showReportModal, setShowReportModal] = useState(false)
   const [showShareTool, setShowShareTool] = useState(false)
-  const [showAnalytics, setShowAnalytics] = useState(false)
   const [showHistoricalReports, setShowHistoricalReports] = useState(true) // 默认展开
   const [selectedHistoricalReport, setSelectedHistoricalReport] = useState<HistoricalReport | null>(null)
   const [showHistoricalReportModal, setShowHistoricalReportModal] = useState(false)
@@ -201,21 +199,22 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
   const fetchHotStocks = async () => {
     setIsLoading(true)
     try {
-      // 添加超时控制
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10秒超时
+      console.log('🚀 开始获取热门股票数据...')
       
-      const response = await fetch('/api/hot-stocks', {
-        signal: controller.signal
+      const response = await fetch(`/api/hot-stocks?useStockTwits=true&t=${Date.now()}`, {
+        cache: 'no-cache',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
       })
-      
-      clearTimeout(timeoutId)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
       
       const data = await response.json()
+      console.log('📊 Hot stocks API 响应:', data)
       
       if (data.success && data.data && data.data.length > 0) {
         setHotStocks(data.data)
@@ -230,11 +229,7 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
     } catch (error) {
       console.error('Error fetching hot stocks:', error)
       setHotStocks(mockHotStocks)
-      if (error instanceof Error && error.name === 'AbortError') {
-        toast.error(locale === 'zh' ? '请求超时，显示模拟数据' : 'Request timeout, showing mock data')
-      } else {
-        toast.error(locale === 'zh' ? '数据获取失败，显示模拟数据' : 'Failed to fetch data, showing mock data')
-      }
+      toast.error(locale === 'zh' ? '数据获取失败，显示模拟数据' : 'Failed to fetch data, showing mock data')
     } finally {
       setIsLoading(false)
     }
@@ -361,31 +356,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
     setShowReportDetail(true)
   }
 
-  const handleDownloadReport = async () => {
-    if (!todaysReport) return
-    
-    try {
-      const isPublic = !user // 如果用户未登录，使用公开版本
-      const response = await fetch(`/api/todays-report-pdf?id=${todaysReport.id}&public=${isPublic}`)
-      
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `${todaysReport.title}.pdf`
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(url)
-        document.body.removeChild(a)
-      } else {
-        toast.error(locale === 'zh' ? '下载失败' : 'Download failed')
-      }
-    } catch (error) {
-      console.error('Download error:', error)
-      toast.error(locale === 'zh' ? '下载错误' : 'Download error')
-    }
-  }
 
 
   if (isLoading) {
@@ -420,7 +390,7 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
               <span>{new Date().toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US')}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <BarChart3 className="w-4 h-4" />
+              <TrendingUp className="w-4 h-4" />
               <span>{hotStocks.length} {getTranslation(locale, 'hotStocks')}</span>
             </div>
             <div className="flex items-center space-x-2">
@@ -437,6 +407,114 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
             <TrendingUp className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>{isLoading ? (locale === 'zh' ? '刷新中...' : 'Refreshing...') : (locale === 'zh' ? '刷新' : 'Refresh')}</span>
           </button>
+        </div>
+      </div>
+
+      {/* Hot Stocks Table - StockTwits Style */}
+      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden mb-6">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-700">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Rank
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Symbol
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Last Price
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  %Change
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Volume
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  52-wk High
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  52-wk Low
+                </th>
+                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Market Cap
+                </th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-700">
+              {hotStocks.map((stock) => (
+                <tr
+                  key={stock.symbol}
+                  className="hover:bg-slate-750 transition-colors duration-200"
+                >
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {stock.rank || '-'}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="text-sm font-medium text-white">
+                        {stock.symbol}
+                      </div>
+                      <div className="text-xs text-slate-400">
+                        {stock.name}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-white">
+                    ${stock.price.toFixed(2)}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm">
+                    <div className="flex items-center justify-end">
+                      {stock.changePercent >= 0 ? (
+                        <TrendingUp className="w-4 h-4 text-green-400 mr-1" />
+                      ) : (
+                        <TrendingDown className="w-4 h-4 text-red-400 mr-1" />
+                      )}
+                      <span className={stock.changePercent >= 0 ? 'text-green-400' : 'text-red-400'}>
+                        {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {stock.volume > 1000000 
+                      ? `${(stock.volume / 1000000).toFixed(1)}M`
+                      : stock.volume > 1000 
+                        ? `${(stock.volume / 1000).toFixed(1)}K`
+                        : stock.volume.toLocaleString()
+                    }
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {stock.high52Week ? `$${stock.high52Week.toFixed(2)}` : '-'}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {stock.low52Week ? `$${stock.low52Week.toFixed(2)}` : '-'}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
+                    {stock.marketCap > 1000000000 
+                      ? `$${(stock.marketCap / 1000000000).toFixed(1)}B`
+                      : stock.marketCap > 1000000 
+                        ? `$${(stock.marketCap / 1000000).toFixed(1)}M`
+                        : stock.marketCap > 0 
+                          ? `$${stock.marketCap.toLocaleString()}`
+                          : '-'
+                    }
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-center">
+                    <button
+                      onClick={() => handleStockClick(stock)}
+                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition-colors"
+                    >
+                      {locale === 'zh' ? '分析' : 'Analyze'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -465,15 +543,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
                 <Share2 className="w-4 h-4" />
                 <span className="text-sm font-medium">
                   {locale === 'zh' ? '分享' : 'Share'}
-                </span>
-              </button>
-              <button
-                onClick={() => setShowAnalytics(!showAnalytics)}
-                className="flex items-center space-x-1 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-md hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors"
-              >
-                <BarChart3 className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {locale === 'zh' ? '统计' : 'Analytics'}
                 </span>
               </button>
               {!user && (
@@ -530,15 +599,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
               </div>
               
               <div className="flex items-center space-x-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleDownloadReport()
-                  }}
-                  className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-md hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors text-sm font-medium"
-                >
-                  {locale === 'zh' ? '下载' : 'Download'}
-                </button>
                 {!user && (
                   <button
                     onClick={(e) => {
@@ -596,143 +656,17 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
         </div>
       )}
 
-      {/* Share Tool */}
+      {/* Share Tool Modal */}
       {showShareTool && (translatedTodaysReport || todaysReport) && (
-        <div className="mb-6">
-          <ShareTool
-            reportId={(translatedTodaysReport || todaysReport)?.id || ''}
-            reportTitle={(translatedTodaysReport || todaysReport)?.title || ''}
-            company={(translatedTodaysReport || todaysReport)?.company || ''}
-            symbol={(translatedTodaysReport || todaysReport)?.symbol || ''}
-            locale={locale}
-          />
-        </div>
+        <ShareTool
+          reportId={(translatedTodaysReport || todaysReport)?.id || ''}
+          reportTitle={(translatedTodaysReport || todaysReport)?.title || ''}
+          company={(translatedTodaysReport || todaysReport)?.company || ''}
+          symbol={(translatedTodaysReport || todaysReport)?.symbol || ''}
+          locale={locale}
+          onClose={() => setShowShareTool(false)}
+        />
       )}
-
-      {/* Share Analytics */}
-      {showAnalytics && todaysReport && (
-        <div className="mb-6">
-          <ShareAnalytics
-            reportId={todaysReport.id}
-            locale={locale}
-          />
-        </div>
-      )}
-
-      {/* Hot Stocks Table - StockTwits Style */}
-      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-700">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Rank
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Symbol
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Last Price
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  %Change
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Volume
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  52-wk High
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  52-wk Low
-                </th>
-                <th className="px-4 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Market Cap
-                </th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-slate-300 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700">
-              {hotStocks.map((stock) => (
-                <tr
-                  key={stock.symbol}
-                  className="hover:bg-slate-750 transition-colors duration-200"
-                >
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300">
-                    {stock.rank || '-'}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-white">
-                        {stock.symbol}
-                      </div>
-                      <div className="text-xs text-slate-400 truncate max-w-32">
-                        {stock.name}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-white text-right">
-                    ${stock.price.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-right">
-                    <div className={`flex items-center justify-end space-x-1 ${
-                      stock.change >= 0 ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {stock.change >= 0 ? (
-                        <TrendingUp className="w-4 h-4" />
-                      ) : (
-                        <TrendingDown className="w-4 h-4" />
-                      )}
-                      <span className="font-medium">
-                        {stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300 text-right">
-                    {stock.volume > 1000000 
-                      ? `${(stock.volume / 1000000).toFixed(1)}M`
-                      : stock.volume > 1000 
-                        ? `${(stock.volume / 1000).toFixed(1)}K`
-                        : stock.volume.toLocaleString()
-                    }
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300 text-right">
-                    {stock.high52Week ? `$${stock.high52Week.toFixed(2)}` : '-'}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300 text-right">
-                    {stock.low52Week ? `$${stock.low52Week.toFixed(2)}` : '-'}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-300 text-right">
-                    {stock.isIndex 
-                      ? 'ETF'
-                      : stock.marketCap > 0 
-                        ? `$${(stock.marketCap / 1e9).toFixed(1)}B`
-                        : '-'
-                    }
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-center">
-                    {stock.isIndex ? (
-                      <span className="text-xs text-slate-500 px-2 py-1 rounded-full bg-slate-700">
-                        Index
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => handleStockClick(stock)}
-                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors duration-200"
-                      >
-                        <FileText className="w-3 h-3 mr-1" />
-                        Generate Report
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       {/* Analysis Modal */}
       {showAnalysis && selectedStock && (
@@ -926,12 +860,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
                         >
                           {locale === 'zh' ? '立即注册' : 'Register Now'}
                         </button>
-                        <button
-                          onClick={handleDownloadReport}
-                          className="px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
-                        >
-                          {locale === 'zh' ? '下载预览版' : 'Download Preview'}
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -945,13 +873,6 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                       {locale === 'zh' ? '完整报告' : 'Full Report'}
                     </h3>
-                    <button
-                      onClick={handleDownloadReport}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span>{locale === 'zh' ? '下载完整版' : 'Download Full Report'}</span>
-                    </button>
                   </div>
                   
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
@@ -971,146 +892,13 @@ export default function DailyAlphaBrief({ locale, user }: DailyAlphaBriefProps) 
         </div>
       )}
 
-      {/* Historical Report Modal */}
-      {showHistoricalReportModal && selectedHistoricalReport && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              {/* Modal Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-slate-500 to-gray-600 rounded-lg flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                      {selectedHistoricalReport.title}
-                    </h2>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {selectedHistoricalReport.company} ({selectedHistoricalReport.symbol}) • {new Date(selectedHistoricalReport.date).toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setShowShareTool(!showShareTool)}
-                    className="flex items-center space-x-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
-                  >
-                    <Share2 className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      {locale === 'zh' ? '分享' : 'Share'}
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setShowAnalytics(!showAnalytics)}
-                    className="flex items-center space-x-1 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-md hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors"
-                  >
-                    <BarChart3 className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      {locale === 'zh' ? '统计' : 'Analytics'}
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setShowHistoricalReportModal(false)}
-                    className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Report Summary */}
-              <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4 mb-6">
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  {selectedHistoricalReport.summary}
-                </p>
-              </div>
-
-              {/* Access Control */}
-              {!user && (
-                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6">
-                  <div className="flex items-start space-x-3">
-                    <Lock className="w-6 h-6 text-amber-600 dark:text-amber-400 mt-1" />
-                    <div>
-                      <h4 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-2">
-                        {locale === 'zh' ? '注册查看完整报告' : 'Register to View Full Report'}
-                      </h4>
-                      <p className="text-amber-700 dark:text-amber-300 mb-4">
-                        {locale === 'zh' 
-                          ? '完整报告包含详细的估值分析、投资建议和风险提示。注册后即可查看完整内容。'
-                          : 'Full report includes detailed valuation analysis, investment recommendations, and risk assessments. Register to access complete content.'
-                        }
-                      </p>
-                      <div className="flex items-center space-x-3">
-                        <button
-                          onClick={() => {
-                            // 这里可以添加注册逻辑
-                            toast.success(locale === 'zh' ? '请注册以查看完整报告' : 'Please register to view full report')
-                          }}
-                          className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors"
-                        >
-                          {locale === 'zh' ? '立即注册' : 'Register Now'}
-                        </button>
-                        <button
-                          onClick={() => {
-                            const link = document.createElement('a')
-                            link.href = `/api/reference-reports/${selectedHistoricalReport.pdfPath}`
-                            link.download = selectedHistoricalReport.pdfPath
-                            document.body.appendChild(link)
-                            link.click()
-                            document.body.removeChild(link)
-                          }}
-                          className="px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg hover:bg-amber-200 dark:hover:bg-amber-900/50 transition-colors"
-                        >
-                          {locale === 'zh' ? '下载预览版' : 'Download Preview'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Full Access for Registered Users */}
-              {user && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                      {locale === 'zh' ? '完整报告' : 'Full Report'}
-                    </h3>
-                    <button
-                      onClick={() => {
-                        const link = document.createElement('a')
-                        link.href = `/api/reference-reports/${selectedHistoricalReport.pdfPath}`
-                        link.download = selectedHistoricalReport.pdfPath
-                        document.body.appendChild(link)
-                        link.click()
-                        document.body.removeChild(link)
-                      }}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span>{locale === 'zh' ? '下载完整版' : 'Download Full Report'}</span>
-                    </button>
-                  </div>
-                  
-                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                    <div className="flex items-center space-x-2 text-green-700 dark:text-green-300">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span className="font-medium">
-                        {locale === 'zh' ? '您已注册，可以查看完整报告内容' : 'You are registered and can view the full report content'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Historical Report Modal - 使用ReportDetailModal组件 */}
+      <ReportDetailModal
+        report={selectedHistoricalReport}
+        isOpen={showHistoricalReportModal}
+        onClose={() => setShowHistoricalReportModal(false)}
+        locale={locale}
+      />
 
       {/* Report Detail Modal */}
       <ReportDetailModal

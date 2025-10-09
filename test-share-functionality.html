@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试Share功能</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-section h3 {
+            margin: 0 0 16px 0;
+            color: #1e293b;
+        }
+        .instructions {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .instructions h3 {
+            margin: 0 0 8px 0;
+            color: #0c4a6e;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 4px;
+            color: #0c4a6e;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        .status.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .test-link {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 8px 8px 8px 0;
+        }
+        .test-link:hover {
+            background: #2563eb;
+        }
+        .verification {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .verification h4 {
+            margin: 0 0 8px 0;
+            color: #374151;
+        }
+        .verification ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .verification li {
+            margin-bottom: 4px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="instructions">
+            <h3>🎯 测试Share功能</h3>
+            <ol>
+                <li>点击下面的链接打开Coinbase报告页面</li>
+                <li>在报告页面中点击蓝色的"Share"按钮</li>
+                <li>查看是否显示SEO优化的分享界面</li>
+                <li>验证分享功能是否正常工作</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3>测试链接</h3>
+            <a href="http://localhost:3000/en/reports/coin-2025-10-05" target="_blank" class="test-link">
+                🔗 打开Coinbase报告页面
+            </a>
+            <a href="http://localhost:3001/en/reports/coin-2025-10-05" target="_blank" class="test-link">
+                🔗 端口3001 - Coinbase报告
+            </a>
+            <a href="http://localhost:3002/en/reports/coin-2025-10-05" target="_blank" class="test-link">
+                🔗 端口3002 - Coinbase报告
+            </a>
+        </div>
+
+        <div class="test-section">
+            <h3>✅ 预期结果</h3>
+            <div class="verification">
+                <h4>1. 页面加载后应该看到：</h4>
+                <ul>
+                    <li>✅ 报告标题：Coinbase Global, Inc. (COIN) - In-Depth Company Profile</li>
+                    <li>✅ 蓝色的"Share"按钮（右上角）</li>
+                    <li>✅ 没有"Download PDF"按钮</li>
+                    <li>✅ 完整的PDF页面图片显示</li>
+                </ul>
+            </div>
+            
+            <div class="verification">
+                <h4>2. 点击Share按钮后应该看到：</h4>
+                <ul>
+                    <li>✅ 弹出分享界面（模态框）</li>
+                    <li>✅ SEO优化的URL显示</li>
+                    <li>✅ 多个社交平台选项（LinkedIn, Twitter, Facebook, Reddit, Email）</li>
+                    <li>✅ 详细的分享信息</li>
+                    <li>✅ 复制链接功能</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 如果遇到问题</h3>
+            <div class="verification">
+                <h4>常见问题及解决方案：</h4>
+                <ul>
+                    <li><strong>看不到Share按钮：</strong>刷新页面或清除浏览器缓存</li>
+                    <li><strong>点击Share没有反应：</strong>检查浏览器控制台是否有错误</li>
+                    <li><strong>分享界面不显示：</strong>确保JavaScript已启用</li>
+                    <li><strong>页面显示错误：</strong>尝试不同的端口（3000, 3001, 3002）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 当前状态</h3>
+            <p>
+                <span class="status success">✅ Download按钮已删除</span>
+                <span class="status success">✅ Share按钮已添加</span>
+                <span class="status success">✅ ShareTool组件已集成</span>
+                <span class="status pending">⏳ 等待测试验证</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

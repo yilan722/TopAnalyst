@@ -1,5 +1,5 @@
 import React from 'react'
-import { X, Calendar, Building2, FileText, Download } from 'lucide-react'
+import { X, Calendar, Building2, FileText } from 'lucide-react'
 import type { Locale } from '@/app/services/i18n'
 
 interface HistoricalReport {
@@ -27,6 +27,15 @@ interface HistoricalReport {
       tables?: any[]
     }
   }
+  tables?: Array<{
+    title: string
+    type: string
+    imagePath?: string
+    section: string
+    isRealData: boolean
+    pageNumber: number
+  }>
+  sections?: { [key: string]: string }
 }
 
 interface ReportDetailModalProps {
@@ -34,6 +43,21 @@ interface ReportDetailModalProps {
   isOpen: boolean
   onClose: () => void
   locale: Locale
+}
+
+// 将中文标题转换为英文
+const getEnglishTitle = (title: string) => {
+  const titleMap: { [key: string]: string } = {
+    '1. 基本面分析': '1. Fundamental Analysis',
+    '2. 业务分析': '2. Business Analysis', 
+    '3. 增长催化剂': '3. Growth Catalysts',
+    '4. 估值分析': '4. Valuation Analysis',
+    '基本面分析': 'Fundamental Analysis',
+    '业务分析': 'Business Analysis',
+    '增长催化剂': 'Growth Catalysts',
+    '估值分析': 'Valuation Analysis'
+  }
+  return titleMap[title] || title
 }
 
 export default function ReportDetailModal({ 
@@ -44,16 +68,6 @@ export default function ReportDetailModal({
 }: ReportDetailModalProps) {
   if (!isOpen || !report) return null
 
-  const handleDownload = () => {
-    if (report.pdfPath) {
-      const link = document.createElement('a')
-      link.href = `/reference-reports/${report.pdfPath}`
-      link.download = report.pdfPath
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
-  }
 
   const getDisplayTitle = () => {
     return locale === 'en' && report.translations?.en?.title 
@@ -94,13 +108,6 @@ export default function ReportDetailModal({
             </div>
             <div className="flex items-center space-x-3">
               <button
-                onClick={handleDownload}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-              >
-                <Download className="w-4 h-4" />
-                <span>{locale === 'zh' ? '下载PDF' : 'Download PDF'}</span>
-              </button>
-              <button
                 onClick={onClose}
                 className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
               >
@@ -124,16 +131,16 @@ export default function ReportDetailModal({
               </div>
 
               {/* Report Sections */}
-              {report.fullContent?.parsedContent?.sections && (
+              {(report.fullContent?.parsedContent?.sections || report.sections) && (
                 <div className="space-y-6">
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                     {locale === 'zh' ? '完整报告内容' : 'Full Report Content'}
                   </h3>
                   
-                  {Object.entries(report.fullContent.parsedContent.sections).map(([sectionTitle, sectionContent]) => (
+                  {Object.entries(report.fullContent?.parsedContent?.sections || report.sections || {}).map(([sectionTitle, sectionContent]) => (
                     <div key={sectionTitle} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
                       <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                        {sectionTitle}
+                        {locale === 'en' ? getEnglishTitle(sectionTitle) : sectionTitle}
                       </h4>
                       <div className="prose prose-slate dark:prose-invert max-w-none">
                         <div className="whitespace-pre-line text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -147,14 +154,15 @@ export default function ReportDetailModal({
 
 
               {/* Tables Section */}
-              {report.fullContent?.parsedContent?.tables && report.fullContent.parsedContent.tables.length > 0 && (
+              {((report.fullContent?.parsedContent?.tables && report.fullContent.parsedContent.tables.length > 0) || (report.tables && report.tables.length > 0)) && (
                 <div className="space-y-6 mt-6">
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                     {locale === 'zh' ? '数据表格' : 'Data Tables'}
                   </h3>
                   
                   <div className="space-y-4">
-                    {report.fullContent.parsedContent.tables.map((table, index) => (
+                    {/* 支持两种表格格式 */}
+                    {report.fullContent?.parsedContent?.tables?.map((table, index) => (
                       <div key={index} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div className="px-6 py-4 bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
                           <h4 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -184,6 +192,31 @@ export default function ReportDetailModal({
                               ))}
                             </tbody>
                           </table>
+                        </div>
+                      </div>
+                    )) || report.tables?.map((table, index) => (
+                      <div key={index} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
+                          <h4 className="text-lg font-semibold text-slate-900 dark:text-white">
+                            {table.title}
+                          </h4>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">
+                            {locale === 'en' ? getEnglishTitle(table.section) : table.section} • {locale === 'zh' ? '第' : 'Page'} {table.pageNumber}
+                          </p>
+                        </div>
+                        <div className="p-4">
+                          {table.type === 'image' && table.imagePath ? (
+                            <img 
+                              src={table.imagePath} 
+                              alt={table.title}
+                              className="w-full h-auto rounded-lg shadow-sm"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="text-sm text-slate-600 dark:text-slate-400">
+                              {locale === 'zh' ? '表格数据' : 'Table Data'}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}

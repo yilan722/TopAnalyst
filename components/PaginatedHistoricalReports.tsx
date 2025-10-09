@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FileText, Calendar, ChevronLeft, ChevronRight, Eye, Download, ExternalLink } from 'lucide-react'
+import { FileText, Calendar, ChevronLeft, ChevronRight, Eye, ExternalLink, Share2 } from 'lucide-react'
 import type { Locale } from '@/app/services/i18n'
 import ReportShareButtons from './ReportShareButtons'
 
@@ -42,6 +42,8 @@ export default function PaginatedHistoricalReports({
   onReportClick 
 }: PaginatedHistoricalReportsProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const [showShareModal, setShowShareModal] = useState(false)
+  const [selectedReport, setSelectedReport] = useState<HistoricalReport | null>(null)
   const reportsPerPage = 10
   
   // 调试信息
@@ -66,36 +68,6 @@ export default function PaginatedHistoricalReports({
     setCurrentPage(page)
   }
   
-  const handleDownload = (e: React.MouseEvent, report: HistoricalReport) => {
-    e.stopPropagation()
-    if (report.pdfPath) {
-      // 尝试从多个可能的路径下载PDF
-      const possiblePaths = [
-        `/reference-reports/${report.pdfPath}`,
-        `/data/reference-reports/${report.pdfPath}`,
-        `/api/download-pdf?id=${report.id}`,
-        report.pdfPath.startsWith('http') ? report.pdfPath : `/reference-reports/${report.pdfPath}`
-      ]
-      
-      // 首先尝试直接下载PDF文件
-      const link = document.createElement('a')
-      link.href = possiblePaths[0]
-      link.download = report.pdfPath
-      link.target = '_blank'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    } else {
-      // 如果没有PDF路径，尝试通过API下载
-      const link = document.createElement('a')
-      link.href = `/api/download-pdf?id=${report.id}`
-      link.download = `${report.symbol}-report.pdf`
-      link.target = '_blank'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
-  }
   
   if (reports.length === 0) {
     return (
@@ -155,16 +127,19 @@ export default function PaginatedHistoricalReports({
                 </a>
                 
                 {/* 分享按钮 */}
-                <ReportShareButtons report={report} locale={locale} />
-                
-                {/* 下载按钮 */}
                 <button
-                  onClick={(e) => handleDownload(e, report)}
-                  className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-md hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm font-medium flex items-center space-x-1"
+                  onClick={() => {
+                    setSelectedReport(report)
+                    setShowShareModal(true)
+                  }}
+                  className="flex items-center space-x-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                 >
-                  <Download className="w-3 h-3" />
-                  <span>{locale === 'zh' ? '下载' : 'Download'}</span>
+                  <Share2 className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {locale === 'zh' ? '分享' : 'Share'}
+                  </span>
                 </button>
+                
               </div>
             </div>
           </div>
@@ -217,6 +192,18 @@ export default function PaginatedHistoricalReports({
             </button>
           </div>
         </div>
+      )}
+
+      {/* Share Modal */}
+      {showShareModal && selectedReport && (
+        <ReportShareButtons
+          report={selectedReport}
+          locale={locale}
+          onClose={() => {
+            setShowShareModal(false)
+            setSelectedReport(null)
+          }}
+        />
       )}
     </div>
   )
